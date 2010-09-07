@@ -26,14 +26,27 @@
 package com.dmurph.tracking;
 
 /**
+ * URL builder for the tracking requests. Interfaced for supporting future versions.
  * @author Daniel Murphy
  *
  */
 public interface GoogleAnalyticsURLBuilder {
 	
+	/**
+	 * Reset the session cookie.
+	 */
 	public void resetSession();
 	
+	/**
+	 * Gets the version for this builder.
+	 * @return
+	 */
 	public String getGoogleAnalyticsVersion();
 	
+	/**
+	 * Build the url request from the data.
+	 * @param argData
+	 * @return
+	 */
 	public String buildURL(AnalyticsRequestData argData);
 }

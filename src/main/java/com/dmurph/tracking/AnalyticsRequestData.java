@@ -26,8 +26,9 @@
 package com.dmurph.tracking;
 
 /**
+ * Tracking data that is pertinent to each individual tracking
+ * request.
  * @author Daniel Murphy
- *
  */
 public class AnalyticsRequestData {
 	

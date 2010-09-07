@@ -41,10 +41,13 @@ public class TrackingTest extends TestCase {
 		JGoogleAnalyticsTracker tracker = JGoogleAnalyticsTracker.getInstance();
 		AnalyticsConfigData config = new AnalyticsConfigData("UA-17109202-5");
 		tracker.initialize(config, GoogleAnalyticsVersion.V_4_7_2);
-		tracker.trackPageView("www.dmurph.com", "Test Page View 1", "/test1.java");
+		tracker.trackPageView("www.dmurph.com", "page with everything", "/test1.java");
 		tracker.trackPageView("www.dmurph.com", "page with hostname and no address", null, null);
 		tracker.trackPageView("notAHostname", "page with a hostname and no address", null, null);
 		tracker.trackPageView(null, "page with no hostname and a address", "test2.java", null);
+		tracker.trackPageView("www.pagewithnotitle.com", null, "notitle.java", null);
+		tracker.trackPageView(null, null, "onlyurl.java", null);
+		tracker.trackPageView("www.onlyhostname.com", null, null, null);
 	}
 	
 	public void testEventTracking(){

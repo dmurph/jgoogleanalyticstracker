@@ -29,6 +29,16 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 /**
+ * Get the tracker by calling {@link #getInstance()}, then initialize by calling
+ * {@link #initialize(AnalyticsConfigData, GoogleAnalyticsVersion)}.  Common tracking calls are implemented
+ * as methods, but if you want to control what data to send, then use {@link #makeCustomRequest(AnalyticsRequestData)}.
+ * If you are making custom calls, the onlyrequirements are:
+ * <ul><li>If you are tracking an event, {@link AnalyticsRequestData#setEventCategory(String)} and
+ * 			{@link AnalyticsRequestData#setEventAction(String)} must both be populated.</li>
+ * 	   <li>If you are not tracking an event, {@link AnalyticsRequestData#setPageURL(String)} must
+ * 		   be populated</li></ul>
+ * See the <a href=http://code.google.com/apis/analytics/docs/tracking/gaTrackingTroubleshooting.html#gifParameters>
+ * Google Troubleshooting Guide</a> for more info on the tracking parameters.
  * @author Daniel Murphy
  *
  */
@@ -43,60 +53,104 @@ public class JGoogleAnalyticsTracker {
 	private GoogleAnalyticsVersion gaVersion = null;
 	private GoogleAnalyticsURLBuilder builder = null;
 	private AnalyticsConfigData configData = null;
+	private boolean enabled = false;
 
 	private JGoogleAnalyticsTracker(){
 		gaVersion = GoogleAnalyticsVersion.V_4_7_2;
 	}
 	
+	/**
+	 * Initializes and enables the tracker.
+	 * @param argConfigData the configuration for this client.  The reference is kept so any modification
+	 * 		  to this object will be reflected in requests.
+	 * @param argVersion
+	 */
 	public void initialize(AnalyticsConfigData argConfigData, GoogleAnalyticsVersion argVersion){
 		gaVersion = argVersion;
 		configData = argConfigData;
 		createBuilder();
+		enabled = true;
 	}
 	
-	/* page view url:
-	 * http://www.google-analytics.com/__utm.gif
-	 * ?utmwv=4.7.2
-	 * &utmn=631966530
-	 * &utmhn=www.dmurph.com
-	 * &utmcs=ISO-8859-1
-	 * &utmsr=1280x800
-	 * &utmsc=24-bit
-	 * &utmul=en-us
-	 * &utmje=1
-	 * &utmfl=10.1%20r53
-	 * &utmdt=Hello
-	 * &utmhid=2043994175
-	 * &utmr=0
-	 * &utmp=%2Ftest%2Ftest.php
-	 * &utmac=UA-17109202-5
-	 * &utmcc=__utma%3D143101472.2118079581.1279863622.1279863622.1279863622.1%3B%2B__utmz%3D143101472.1279863622.1.1.utmcsr%3D(direct)%7Cutmccn%3D(direct)%7Cutmcmd%3D(none)%3B&gaq=1
+	/**
+	 * Sets if the api dispatches tracking requests.
+	 * @param argEnabled
 	 */
-	public void trackPageView(String argHostName, String argPageTitle, String argPageURL){
-		trackPageView(argHostName, argPageTitle, argPageURL, "http://www.dmurph.com");
+	public void setEnabled(boolean argEnabled){
+		enabled = argEnabled;
 	}
 	
-	public void trackPageView(String argHostName, String argPageTitle, String argPageURL, String argReferrerURL){
+	/**
+	 * If the api is dispatching tracking requests (default of true).
+	 * @return
+	 */
+	public boolean isEnabled(){
+		return enabled;
+	}
+
+	/**
+	 * Tracks a page view.
+	 * @param argPageURL required, Google won't track without it.  Ex: <code>"org/me/javaclass.java"</code>,
+	 * 		  or anything you want as the page url.
+	 * @param argPageTitle content title
+	 * @param argHostName the host name for the url
+	 */
+	public void trackPageView(String argPageURL, String argPageTitle, String argHostName){
+		trackPageView(argPageURL, argPageTitle, argHostName, "http://www.dmurph.com");
+	}
+	
+	/**
+	 * Tracks a page view.
+	 * @param argPageURL required, Google won't track without it.  Ex: <code>"org/me/javaclass.java"</code>,
+	 * 		  or anything you want as the page url.
+	 * @param argPageTitle content title
+	 * @param argHostName the host name for the url
+	 * @param argReferrerURL the url of the referrer to this page.  important for tracking trends.
+	 */
+	public void trackPageView(String argPageURL, String argPageTitle, String argHostName, String argReferrerURL){
 		if(builder == null){
 			throw new RuntimeException("Class was not initialized");
+		}
+		if(argPageURL == null){
+			throw new IllegalArgumentException("Page URL cannot be null, Google will not track the data.");
 		}
 		AnalyticsRequestData data = new AnalyticsRequestData();
 		data.setHostName(argHostName);
 		data.setPageTitle(argPageTitle);
 		data.setPageURL(argPageURL);
 		data.setReferrer(argReferrerURL);
-		
 		makeCustomRequest(data);
 	}
 	
+	/**
+	 * Tracks an event.  To provide more info about the page, use
+	 * {@link #makeCustomRequest(AnalyticsRequestData)}.
+	 * @param argCategory
+	 * @param argAction
+	 */
 	public void trackEvent(String argCategory, String argAction){
 		trackEvent(argCategory, argAction, null, null);
 	}
 	
+	/**
+	 * Tracks an event.  To provide more info about the page, use
+	 * {@link #makeCustomRequest(AnalyticsRequestData)}. 
+	 * @param argCategory
+	 * @param argAction
+	 * @param argLabel
+	 */
 	public void trackEvent(String argCategory, String argAction, String argLabel){
 		trackEvent(argCategory, argAction, argLabel, null);
 	}
 	
+	/**
+	 * Tracks an event.  To provide more info about the page, use
+	 * {@link #makeCustomRequest(AnalyticsRequestData)}.
+	 * @param argCategory
+	 * @param argAction
+	 * @param argLabel
+	 * @param argValue
+	 */
 	public void trackEvent(String argCategory, String argAction, String argLabel, String argValue){
 		if(builder == null){
 			throw new RuntimeException("Class was not initialized");
@@ -119,7 +173,12 @@ public class JGoogleAnalyticsTracker {
 	}
 	
 	private synchronized void makeRequest(String argURL){
-		
+		if(!enabled){
+			if(DEBUG_PRINT){
+				System.out.println("Ignoring tracking request, enabled is true");
+			}
+			return;
+		}
 		try {
 			URL url = new URL(argURL);
 			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -148,6 +207,10 @@ public class JGoogleAnalyticsTracker {
 		}
 	}
 	
+	/**
+	 * Get the instance of the tracker.
+	 * @return
+	 */
 	public synchronized static JGoogleAnalyticsTracker getInstance(){
 		if(tracker == null){
 			tracker = new JGoogleAnalyticsTracker();

@@ -25,7 +25,16 @@
  */
 package com.dmurph.tracking;
 
+import java.awt.Dimension;
+import java.awt.DisplayMode;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
+import java.awt.Toolkit;
+
 /**
+ * Data that is client-specific, and should be common for all
+ * tracking requests.  For convenience most of this data is
+ * populated automatically by {@link #populateFromSystem()}.
  * @author Daniel Murphy
  *
  */
@@ -35,7 +44,7 @@ public class AnalyticsConfigData {
 	private String encoding = "UTF-8";
 	private String screenResolution = null;
 	private String colorDepth = null;
-	private String userLanguage = "en-us";
+	private String userLanguage = null;
 	private String flashVersion = null;
 	
 	public AnalyticsConfigData(String argTrackingCode){
@@ -43,6 +52,38 @@ public class AnalyticsConfigData {
 			throw new RuntimeException("Tracking code cannot be null");
 		}
 		trackingCode = argTrackingCode;
+		populateFromSystem();
+	}
+	
+	/**
+	 * Populates user language, color depth, screen resolution, 
+	 * and character encoding.  Can't get flash version.
+	 */
+	public void populateFromSystem(){
+		encoding = System.getProperty("file.encoding");
+		userLanguage = System.getProperty("user.language")+"-"+System.getProperty("user.region");
+		
+		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+		GraphicsDevice[] gs = ge.getScreenDevices();
+
+		int screenHeight = 0;
+		int screenWidth = 0;
+		// Get size of each screen
+		for (int i=0; i<gs.length; i++) {
+		    DisplayMode dm = gs[i].getDisplayMode();
+		    screenWidth += dm.getWidth();
+		    screenHeight += dm.getHeight();
+		}
+		if(screenHeight != 0 && screenWidth != 0){
+			screenResolution = screenWidth+"x"+screenHeight;
+		}
+		
+		if(gs[0] != null){
+			colorDepth = gs[0].getDisplayMode().getBitDepth()+"";
+			for(int i=1; i<gs.length; i++){
+				colorDepth += ", "+gs[i].getDisplayMode().getBitDepth()+"";
+			}
+		}
 	}
 	/**
 	 * @return the colorDepth
