@@ -42,52 +42,10 @@ public class AnalyticsRequestData {
 	private String eventValue = null;
 
 	/**
-	 * @return the contentTitle
+	 * @return the eventAction
 	 */
-	public String getPageTitle() {
-		return pageTitle;
-	}
-	/**
-	 * @param argContentTitle the contentTitle to set
-	 */
-	public void setPageTitle(String argContentTitle) {
-		pageTitle = argContentTitle;
-	}
-	/**
-	 * @return the hostName
-	 */
-	public String getHostName() {
-		return hostName;
-	}
-	/**
-	 * @param argHostName the hostName to set
-	 */
-	public void setHostName(String argHostName) {
-		hostName = argHostName;
-	}
-	/**
-	 * @return the referrer
-	 */
-	public String getReferrer() {
-		return referrer;
-	}
-	/**
-	 * @param argReferrer the referrer to set
-	 */
-	public void setReferrer(String argReferrer) {
-		referrer = argReferrer;
-	}
-	/**
-	 * @return the pageURL
-	 */
-	public String getPageURL() {
-		return pageURL;
-	}
-	/**
-	 * @param argPageURL the pageURL to set
-	 */
-	public void setPageURL(String argPageURL) {
-		pageURL = argPageURL;
+	public String getEventAction() {
+		return eventAction;
 	}
 	/**
 	 * @return the eventCategory
@@ -96,34 +54,10 @@ public class AnalyticsRequestData {
 		return eventCategory;
 	}
 	/**
-	 * @param argEventCategory the eventCategory to set
-	 */
-	public void setEventCategory(String argEventCategory) {
-		eventCategory = argEventCategory;
-	}
-	/**
-	 * @return the eventAction
-	 */
-	public String getEventAction() {
-		return eventAction;
-	}
-	/**
-	 * @param argEventAction the eventAction to set
-	 */
-	public void setEventAction(String argEventAction) {
-		eventAction = argEventAction;
-	}
-	/**
 	 * @return the eventLabel
 	 */
 	public String getEventLabel() {
 		return eventLabel;
-	}
-	/**
-	 * @param argEventLabel the eventLabel to set
-	 */
-	public void setEventLabel(String argEventLabel) {
-		eventLabel = argEventLabel;
 	}
 	/**
 	 * @return the eventValue
@@ -132,9 +66,93 @@ public class AnalyticsRequestData {
 		return eventValue;
 	}
 	/**
+	 * @return the hostName
+	 */
+	public String getHostName() {
+		return hostName;
+	}
+	/**
+	 * @return the contentTitle
+	 */
+	public String getPageTitle() {
+		return pageTitle;
+	}
+	/**
+	 * @return the pageURL
+	 */
+	public String getPageURL() {
+		return pageURL;
+	}
+	/**
+	 * @return the referrer
+	 */
+	public String getReferrer() {
+		return referrer;
+	}
+	/**
+	 * Sets the event action, which is required for
+	 * tracking events.
+	 * @param argEventAction the eventAction to set
+	 */
+	public void setEventAction(String argEventAction) {
+		eventAction = argEventAction;
+	}
+	/**
+	 * Sets the event category, which is required for
+	 * tracking events.
+	 * @param argEventCategory the eventCategory to set
+	 */
+	public void setEventCategory(String argEventCategory) {
+		eventCategory = argEventCategory;
+	}
+	/**
+	 * Sets the event label, which is optional for
+	 * tracking events.
+	 * @param argEventLabel the eventLabel to set
+	 */
+	public void setEventLabel(String argEventLabel) {
+		eventLabel = argEventLabel;
+	}
+	/**
+	 * Sets the event value, which is optional for tracking
+	 * events.
 	 * @param argEventValue the eventValue to set
 	 */
 	public void setEventValue(String argEventValue) {
 		eventValue = argEventValue;
+	}
+	/**
+	 * The host name of the page
+	 * @param argHostName the hostName to set
+	 */
+	public void setHostName(String argHostName) {
+		hostName = argHostName;
+	}
+	/**
+	 * Sets the page title, which will be the Content Title
+	 * in Google Analytics
+	 * @param argContentTitle the contentTitle to set
+	 */
+	public void setPageTitle(String argContentTitle) {
+		pageTitle = argContentTitle;
+	}
+	/**
+	 * The page url, which is required.  Traditionally
+	 * this is of the form "/content/page.html", but you can
+	 * put anything here (like "/com/dmurph/test.java").
+	 * @param argPageURL the pageURL to set
+	 */
+	public void setPageURL(String argPageURL) {
+		pageURL = argPageURL;
+	}
+	/**
+	 * The referrer of this request.  This is used by
+	 * google analytics to track trends.  For that to
+	 * work this has to equal hostname+pageurl of referring
+	 * request.
+	 * @param argReferrer the referrer to set
+	 */
+	public void setReferrer(String argReferrer) {
+		referrer = argReferrer;
 	}
 }

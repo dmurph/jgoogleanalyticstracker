@@ -25,11 +25,9 @@
  */
 package com.dmurph.tracking;
 
-import java.awt.Dimension;
 import java.awt.DisplayMode;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
-import java.awt.Toolkit;
 
 /**
  * Data that is client-specific, and should be common for all
@@ -47,6 +45,12 @@ public class AnalyticsConfigData {
 	private String userLanguage = null;
 	private String flashVersion = null;
 	
+	/**
+	 * constructs with the tracking code, and 
+	 * automatically populates most of the config
+	 * data from the current system.
+	 * @param argTrackingCode
+	 */
 	public AnalyticsConfigData(String argTrackingCode){
 		if(argTrackingCode == null){
 			throw new RuntimeException("Tracking code cannot be null");
@@ -81,7 +85,7 @@ public class AnalyticsConfigData {
 		if(gs[0] != null){
 			colorDepth = gs[0].getDisplayMode().getBitDepth()+"";
 			for(int i=1; i<gs.length; i++){
-				colorDepth += ", "+gs[i].getDisplayMode().getBitDepth()+"";
+				colorDepth += ", "+gs[i].getDisplayMode().getBitDepth();
 			}
 		}
 	}
@@ -122,30 +126,35 @@ public class AnalyticsConfigData {
 		return userLanguage;
 	}
 	/**
-	 * @param argColorDepth the colorDepth to set
+	 * Sets the color depth of the user.  like 32 bit.
+	 * @param argColorDepth
 	 */
 	public void setColorDepth(String argColorDepth) {
 		colorDepth = argColorDepth;
 	}
 	/**
+	 * Sets the character encoding of the client.  like UTF-8
 	 * @param argEncoding the encoding to set
 	 */
 	public void setEncoding(String argEncoding) {
 		encoding = argEncoding;
 	}
 	/**
+	 * Sets the flash version of the client, like "9.0 r24" 
 	 * @param argFlashVersion the flashVersion to set
 	 */
 	public void setFlashVersion(String argFlashVersion) {
 		flashVersion = argFlashVersion;
 	}
 	/**
+	 * Sets the screen resolution, like "1280x800".
 	 * @param argScreenResolution the screenResolution to set
 	 */
 	public void setScreenResolution(String argScreenResolution) {
 		screenResolution = argScreenResolution;
 	}
 	/**
+	 * Sets the user language, like "EN-us"
 	 * @param argUserLanguage the userLanguage to set
 	 */
 	public void setUserLanguage(String argUserLanguage) {

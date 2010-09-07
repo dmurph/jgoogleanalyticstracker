@@ -12,13 +12,14 @@ h2. Usage
 
 p. The api is fairly straightforward, to start you make your config data:
 
-@AnalyticsConfigData config = new AnalyticsConfigData("MyTrackingCode");
-config.setScreenResolution("1280x800"); // set config parameters@
+bc.. AnalyticsConfigData config = new AnalyticsConfigData("MyTrackingCode");
+config.setScreenResolution("1280x800"); // set config parameters
+// etc
 
 p. You set up the @JGoogleAnalyticsTracker@ with the config and a version (right now only 4.7.2, but it's there for when Google updates their tags and such):
 
-@JGoogleAnalyticsTracker tracker = JGoogleAnalyticsTracker.getInstance();
-tracker.initialize(config, GoogleAnalyticsVersion.V_4_7_2);@
+bc.. JGoogleAnalyticsTracker tracker = JGoogleAnalyticsTracker.getInstance();
+tracker.initialize(config, GoogleAnalyticsVersion.V_4_7_2);
 
-p. and then you can send tracking data with the @trackPageView@ and @trackEvent@ methods.
+p. and then you can send tracking data with the @trackPageView@ and @trackEvent@ methods, or make your own request with @makeCustomRequest(AnalyticsRequestData)@
 
