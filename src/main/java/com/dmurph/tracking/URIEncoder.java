@@ -30,26 +30,26 @@ package com.dmurph.tracking;
 public class URIEncoder {
 
 	private static String mark = "-_.!~*'()\"";
+	
+	public static String encodeURI(String argString) {
+		StringBuffer uri = new StringBuffer(); // Encoded URL
 
-    public static String encodeURI(String argString) {
-        StringBuffer uri = new StringBuffer(); // Encoded URL
-
-        char[] chars = argString.toCharArray();
-        for(int i = 0; i<chars.length; i++) {
-            char c = chars[i];
-            if((c >= '0' && c <= '9') || (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')) {
-                uri.append(c);
-            }
-            else {
-                if(mark.indexOf(c) == -1) {
-                    uri.append("%");
-                    uri.append(Integer.toHexString((int)c));
-                }
-                else {
-                    uri.append(c);
-                }
-            }
-        }
-        return uri.toString();
-    }
+		char[] chars = argString.toCharArray();
+		for(int i = 0; i<chars.length; i++) {
+			char c = chars[i];
+			if((c >= '0' && c <= '9') || (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')) {
+				uri.append(c);
+			}
+			else {
+				if(mark.indexOf(c) == -1) {
+					uri.append("%");
+					uri.append(Integer.toHexString((int)c));
+				}
+				else {
+					uri.append(c);
+				}
+			}
+		}
+		return uri.toString();
+	}
 }
