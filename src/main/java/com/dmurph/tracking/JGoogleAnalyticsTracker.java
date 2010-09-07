@@ -154,7 +154,8 @@ public class JGoogleAnalyticsTracker {
 	 * 		  or anything you want as the page url.
 	 * @param argPageTitle content title
 	 * @param argHostName the host name for the url
-	 * 
+	 * @param argSearchSource source of the search engine.  ex: google
+	 * @param argSearchKeywords the keywords of the search. ex: java google analytics tracking utility
 	 */
 	public void trackPageViewFromSearch(String argPageURL, String argPageTitle, String argHostName, String argSearchSource, String argSearchKeywords){
 		if(argPageURL == null){
