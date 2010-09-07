@@ -21,8 +21,7 @@ config.setFlashVesion("9.0 r24");
 
 p. You set up the @JGoogleAnalyticsTracker@ with the config and a version (right now only 4.7.2, but it's there for future analytics versions):
 
-bc.. JGoogleAnalyticsTracker tracker = JGoogleAnalyticsTracker.getInstance();
-tracker.initialize(config, GoogleAnalyticsVersion.V_4_7_2);
+bc.. JGoogleAnalyticsTracker tracker = new JGoogleAnalyticsTracker(config, GoogleAnalyticsVersion.V_4_7_2);
 
 p. and then you can send tracking data with the @trackPageView@ and @trackEvent@ methods, or make your own request the @makeCustomRequest(AnalyticsRequestData)@ method.  You can track referrals or searches by calling the @trackPageViewFromReferrer@ or @trackPageViewFromSearch@ methods.
 
