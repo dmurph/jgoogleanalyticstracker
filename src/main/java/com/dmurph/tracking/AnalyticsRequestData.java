@@ -1,4 +1,26 @@
 /**
+ * Copyright (c) 2010 Daniel Murphy
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining
+ * a copy of this software and associated documentation files (the
+ * "Software"), to deal in the Software without restriction, including
+ * without limitation the rights to use, copy, modify, merge, publish,
+ * distribute, sublicense, and/or sell copies of the Software, and to
+ * permit persons to whom the Software is furnished to do so, subject to
+ * the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be
+ * included in all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+ * LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+/**
  * Created on Jul 20, 2010, 4:53:44 AM
  */
 package com.dmurph.tracking;
@@ -9,103 +31,26 @@ package com.dmurph.tracking;
  */
 public class AnalyticsRequestData {
 	
-	private String trackingCode = null;
-	private String encoding = null;
-	private String screenResolution = null;
-	private String colorDepth = null;
-	private String userLanguage = null;
-	private String flashVersion = null;
-	private String contentTitle = null;
+	private String pageTitle = null;
 	private String hostName = null;
 	private String referrer = null;
 	private String pageURL = null;
-	private String trackingCategory = null;
-	private String trackingAction = null;
-	private String trackingLabel = null;
-	private String trackingValue = null;
-	/**
-	 * @return the trackingCode
-	 */
-	public String getTrackingCode() {
-		return trackingCode;
-	}
-	/**
-	 * @param argTrackingCode the trackingCode to set
-	 */
-	public void setTrackingCode(String argTrackingCode) {
-		trackingCode = argTrackingCode;
-	}
-	/**
-	 * @return the encoding
-	 */
-	public String getEncoding() {
-		return encoding;
-	}
-	/**
-	 * @param argEncoding the encoding to set
-	 */
-	public void setEncoding(String argEncoding) {
-		encoding = argEncoding;
-	}
-	/**
-	 * @return the screenResolution
-	 */
-	public String getScreenResolution() {
-		return screenResolution;
-	}
-	/**
-	 * @param argScreenResolution the screenResolution to set
-	 */
-	public void setScreenResolution(String argScreenResolution) {
-		screenResolution = argScreenResolution;
-	}
-	/**
-	 * @return the colorDepth
-	 */
-	public String getColorDepth() {
-		return colorDepth;
-	}
-	/**
-	 * @param argColorDepth the colorDepth to set
-	 */
-	public void setColorDepth(String argColorDepth) {
-		colorDepth = argColorDepth;
-	}
-	/**
-	 * @return the userLanguage
-	 */
-	public String getUserLanguage() {
-		return userLanguage;
-	}
-	/**
-	 * @param argUserLanguage the userLanguage to set
-	 */
-	public void setUserLanguage(String argUserLanguage) {
-		userLanguage = argUserLanguage;
-	}
-	/**
-	 * @return the flashVersion
-	 */
-	public String getFlashVersion() {
-		return flashVersion;
-	}
-	/**
-	 * @param argFlashVersion the flashVersion to set
-	 */
-	public void setFlashVersion(String argFlashVersion) {
-		flashVersion = argFlashVersion;
-	}
+	private String eventCategory = null;
+	private String eventAction = null;
+	private String eventLabel = null;
+	private String eventValue = null;
+
 	/**
 	 * @return the contentTitle
 	 */
-	public String getContentTitle() {
-		return contentTitle;
+	public String getPageTitle() {
+		return pageTitle;
 	}
 	/**
 	 * @param argContentTitle the contentTitle to set
 	 */
-	public void setContentTitle(String argContentTitle) {
-		contentTitle = argContentTitle;
+	public void setPageTitle(String argContentTitle) {
+		pageTitle = argContentTitle;
 	}
 	/**
 	 * @return the hostName
@@ -144,51 +89,51 @@ public class AnalyticsRequestData {
 		pageURL = argPageURL;
 	}
 	/**
-	 * @return the trackingCategory
+	 * @return the eventCategory
 	 */
-	public String getTrackingCategory() {
-		return trackingCategory;
+	public String getEventCategory() {
+		return eventCategory;
 	}
 	/**
-	 * @param argTrackingCategory the trackingCategory to set
+	 * @param argEventCategory the eventCategory to set
 	 */
-	public void setTrackingCategory(String argTrackingCategory) {
-		trackingCategory = argTrackingCategory;
+	public void setEventCategory(String argEventCategory) {
+		eventCategory = argEventCategory;
 	}
 	/**
-	 * @return the trackingAction
+	 * @return the eventAction
 	 */
-	public String getTrackingAction() {
-		return trackingAction;
+	public String getEventAction() {
+		return eventAction;
 	}
 	/**
-	 * @param argTrackingAction the trackingAction to set
+	 * @param argEventAction the eventAction to set
 	 */
-	public void setTrackingAction(String argTrackingAction) {
-		trackingAction = argTrackingAction;
+	public void setEventAction(String argEventAction) {
+		eventAction = argEventAction;
 	}
 	/**
-	 * @return the trackingLabel
+	 * @return the eventLabel
 	 */
-	public String getTrackingLabel() {
-		return trackingLabel;
+	public String getEventLabel() {
+		return eventLabel;
 	}
 	/**
-	 * @param argTrackingLabel the trackingLabel to set
+	 * @param argEventLabel the eventLabel to set
 	 */
-	public void setTrackingLabel(String argTrackingLabel) {
-		trackingLabel = argTrackingLabel;
+	public void setEventLabel(String argEventLabel) {
+		eventLabel = argEventLabel;
 	}
 	/**
-	 * @return the trackingValue
+	 * @return the eventValue
 	 */
-	public String getTrackingValue() {
-		return trackingValue;
+	public String getEventValue() {
+		return eventValue;
 	}
 	/**
-	 * @param argTrackingValue the trackingValue to set
+	 * @param argEventValue the eventValue to set
 	 */
-	public void setTrackingValue(String argTrackingValue) {
-		trackingValue = argTrackingValue;
+	public void setEventValue(String argEventValue) {
+		eventValue = argEventValue;
 	}
 }
