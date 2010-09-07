@@ -22,7 +22,7 @@ p. You set up the @JGoogleAnalyticsTracker@ with the config and a version (right
 bc.. JGoogleAnalyticsTracker tracker = JGoogleAnalyticsTracker.getInstance();
 tracker.initialize(config, GoogleAnalyticsVersion.V_4_7_2);
 
-p. and then you can send tracking data with the @trackPageView@ and @trackEvent@ methods, or make your own request the @makeCustomRequest(AnalyticsRequestData)@ method.  
+p. and then you can send tracking data with the @trackPageView@ and @trackEvent@ methods, or make your own request the @makeCustomRequest(AnalyticsRequestData)@ method.  Tracking referrals and searches is made through calling @trackPageViewFromReferrer@ and @trackPageViewFromSearch@.
 
 p=. For complete documentation, see the "javadocs":http://www.dmurph.com/jgoogleanalyticstracker/index.html , or just view the source, it's very straightforward.  For more information on the tracking parameters take a look at Google's "Troubleshooting Guide":http://code.google.com/apis/analytics/docs/tracking/gaTrackingTroubleshooting.html
 
