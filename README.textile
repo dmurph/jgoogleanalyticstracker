@@ -1,0 +1,26 @@
+h1. JGoogleAnalyticsTracker
+
+h2. Introduction
+
+p. JGoogleAnalyticsTracker is a java api for sending out Google tracking data.  I developed it so I could use Google's fantastic analytics software on java gui applications, as Google never made a java implementation for sending tracking data.
+
+h2. License
+
+p. See the LICENSE file
+
+h2. Usage
+
+p. The api is fairly straightforward, to start you make your config data:
+
+@AnalyticsConfigData config = new AnalyticsConfigData("MyTrackingCode");
+// set any config parameter
+config.setScreenResolution("1280x800");
+// etc@
+
+p. You set up the @JGoogleAnalyticsTracker@ with the config and a version (right now only 4.7.2, but it's there for when Google updates their tags and such):
+
+@JGoogleAnalyticsTracker tracker = JGoogleAnalyticsTracker.getInstance();
+tracker.initialize(config, GoogleAnalyticsVersion.V_4_7_2);@
+
+p. and then you can send tracking data with the @trackPageView@ and @trackEvent@ methods.
+

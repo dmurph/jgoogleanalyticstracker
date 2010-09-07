@@ -86,8 +86,7 @@ public class JGoogleAnalyticsTracker {
 		data.setPageURL(argPageURL);
 		data.setReferrer(argReferrerURL);
 		
-		String url = builder.buildURL(data);
-		makeRequest(url);
+		makeCustomRequest(data);
 	}
 	
 	public void trackEvent(String argCategory, String argAction){
@@ -108,7 +107,14 @@ public class JGoogleAnalyticsTracker {
 		data.setEventLabel(argLabel);
 		data.setEventValue(argValue);
 		
-		String url = builder.buildURL(data);
+		makeCustomRequest(data);
+	}
+	
+	public void makeCustomRequest(AnalyticsRequestData argData){
+		if(argData == null){
+			throw new NullPointerException("Data cannot be null");
+		}
+		String url = builder.buildURL(argData);
 		makeRequest(url);
 	}
 	
