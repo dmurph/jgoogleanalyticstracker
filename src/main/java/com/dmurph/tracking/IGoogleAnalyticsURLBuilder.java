@@ -30,7 +30,7 @@ package com.dmurph.tracking;
  * @author Daniel Murphy
  *
  */
-public interface GoogleAnalyticsURLBuilder {
+public interface IGoogleAnalyticsURLBuilder {
 	
 	/**
 	 * Reset the session cookie.

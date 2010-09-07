@@ -26,7 +26,6 @@
 package com.dmurph.tracking;
 
 import java.io.UnsupportedEncodingException;
-import java.net.URI;
 import java.net.URLEncoder;
 import java.util.Random;
 
@@ -35,7 +34,7 @@ import java.util.Random;
  * @author Daniel Murphy
  *
  */
-public class GoogleAnalyticsV4_7_2 implements GoogleAnalyticsURLBuilder{
+public class GoogleAnalyticsV4_7_2 implements IGoogleAnalyticsURLBuilder{
 	public static final String URL_PREFIX = "http://www.google-analytics.com/__utm.gif";
 
 	private AnalyticsConfigData config;
@@ -49,14 +48,14 @@ public class GoogleAnalyticsV4_7_2 implements GoogleAnalyticsURLBuilder{
 	}
 
 	/**
-	 * @see com.dmurph.tracking.GoogleAnalyticsURLBuilder#getGoogleAnalyticsVersion()
+	 * @see com.dmurph.tracking.IGoogleAnalyticsURLBuilder#getGoogleAnalyticsVersion()
 	 */
 	public String getGoogleAnalyticsVersion() {
 		return "4.7.2";
 	}
 	
 	/**
-	 * @see com.dmurph.tracking.GoogleAnalyticsURLBuilder#buildURL(com.dmurph.tracking.AnalyticsRequestData)
+	 * @see com.dmurph.tracking.IGoogleAnalyticsURLBuilder#buildURL(com.dmurph.tracking.AnalyticsRequestData)
 	 */
 	public String buildURL(AnalyticsRequestData argData) {
 		StringBuilder sb = new StringBuilder();
@@ -68,13 +67,7 @@ public class GoogleAnalyticsV4_7_2 implements GoogleAnalyticsURLBuilder{
 	    sb.append("&utmn=" + random.nextInt()); // random int so no caching
 	   
 	    if(argData.getHostName() != null){
-	    	String encoded;
-	    	try { // we have to encode it for a url
-				encoded = URLEncoder.encode(argData.getHostName(), "UTF-8");
-			} catch (UnsupportedEncodingException e) {
-				throw new RuntimeException(e);
-			}
-	    	sb.append("&utmhn=" + encoded); // hostname
+	    	sb.append("&utmhn=" + getURLString(argData.getHostName())); // hostname
 	    }
 	    
 	    if(argData.getEventAction() != null && argData.getEventCategory() != null){
@@ -213,7 +206,7 @@ public class GoogleAnalyticsV4_7_2 implements GoogleAnalyticsURLBuilder{
 	}
 
 	/**
-	 * @see com.dmurph.tracking.GoogleAnalyticsURLBuilder#resetSession()
+	 * @see com.dmurph.tracking.IGoogleAnalyticsURLBuilder#resetSession()
 	 */
 	public void resetSession() {
 		cookie1 = random.nextInt();
