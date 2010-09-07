@@ -34,12 +34,91 @@ public class AnalyticsRequestData {
 	
 	private String pageTitle = null;
 	private String hostName = null;
-	private String referrer = null;
 	private String pageURL = null;
 	private String eventCategory = null;
 	private String eventAction = null;
 	private String eventLabel = null;
 	private String eventValue = null;
+//	utmcsr
+//	Identifies a search engine, newsletter name, or other source specified in the
+//	utm_source query parameter See the “Marketing Campaign Tracking”
+//	section for more information about query parameters.
+//
+//	utmccn
+//	Stores the campaign name or value in the utm_campaign query parameter.
+//
+//	utmctr
+//	Identifies the keywords used in an organic search or the value in the utm_term query parameter.
+//
+//	utmcmd
+//	A campaign medium or value of utm_medium query parameter.
+//
+//	utmcct
+//	Campaign content or the content of a particular ad (used for A/B testing)
+//	The value from utm_content query parameter.
+	// referal:
+	//utmcsr=forums.jinx.com|utmcct=/topic.asp|utmcmd=referral
+	//utmcsr=rolwheels.com|utmccn=(referral)|utmcmd=referral|utmcct=/rol_dhuez_wheels.php
+	// search:
+	// utmcsr=google|utmccn=(organic)|utmcmd=organic|utmctr=rol%20wheels
+	
+	// utmcsr%3D(direct)%7Cutmccn%D(direct)%7utmcmd%3D(none)
+	private String utmcsr = "(direct)";
+	private String utmccn = "(direct)";
+	private String utmctr = null;
+	private String utmcmd = "(none)";
+	private String utmcct = null;
+	
+	public void setReferer(String argSite, String argPage){
+		utmcmd = "referral";
+		utmcct = argPage;
+		utmccn = "(referral)";
+		utmcsr = argSite;
+		utmctr = null;
+	}
+	
+	public void setSeachReferrer(String argSearchSource, String argSearchKeywords){
+		utmcsr = argSearchSource;
+		utmctr = argSearchKeywords;
+		utmcmd = "organic";
+		utmccn = "(organic)";
+		utmcct = null;
+	}
+
+	/**
+	 * @return the utmcsr
+	 */
+	public String getUtmcsr() {
+		return utmcsr;
+	}
+
+	/**
+	 * @return the utmccn
+	 */
+	public String getUtmccn() {
+		return utmccn;
+	}
+
+	/**
+	 * @return the utmctr
+	 */
+	public String getUtmctr() {
+		return utmctr;
+	}
+
+	/**
+	 * @return the utmcmd
+	 */
+	public String getUtmcmd() {
+		return utmcmd;
+	}
+
+	/**
+	 * @return the utmcct
+	 */
+	public String getUtmcct() {
+		return utmcct;
+	}
 
 	/**
 	 * @return the eventAction
@@ -82,12 +161,6 @@ public class AnalyticsRequestData {
 	 */
 	public String getPageURL() {
 		return pageURL;
-	}
-	/**
-	 * @return the referrer
-	 */
-	public String getReferrer() {
-		return referrer;
 	}
 	/**
 	 * Sets the event action, which is required for
@@ -144,15 +217,5 @@ public class AnalyticsRequestData {
 	 */
 	public void setPageURL(String argPageURL) {
 		pageURL = argPageURL;
-	}
-	/**
-	 * The referrer of this request.  This is used by
-	 * google analytics to track trends.  For that to
-	 * work this has to equal hostname+pageurl of referring
-	 * request.
-	 * @param argReferrer the referrer to set
-	 */
-	public void setReferrer(String argReferrer) {
-		referrer = argReferrer;
 	}
 }

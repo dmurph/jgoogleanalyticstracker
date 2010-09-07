@@ -38,7 +38,7 @@ public class GoogleAnalyticsV4_7_2 implements GoogleAnalyticsURLBuilder{
 	public static final String URL_PREFIX = "http://www.google-analytics.com/__utm.gif";
 
 	private AnalyticsConfigData config;
-	private Random random = new Random((long)(Math.random()*83287332738383l));
+	private Random random = new Random((long)(Math.random()*Long.MAX_VALUE));
 	private int cookie1;
 	private int cookie2;
 	
@@ -130,13 +130,6 @@ public class GoogleAnalyticsV4_7_2 implements GoogleAnalyticsURLBuilder{
 	    
 	    sb.append("&utmhid="+random.nextInt());
 	    
-	    if(argData.getReferrer() != null){
-	    	sb.append("&utmr="+argData.getReferrer()); // referrer URL	    	
-	    }else{
-	    	sb.append("&utmr=0"); // no referrer    	
-	    }
-	    
-	    
 	    if(argData.getPageURL() != null){
 	    	String encoded = null;
 	    	
@@ -152,7 +145,44 @@ public class GoogleAnalyticsV4_7_2 implements GoogleAnalyticsURLBuilder{
 	    sb.append("&utmac=" + config.getTrackingCode()); // tracking code
 	    
 	    // cookie data
-	    sb.append("&utmcc=__utma%3D"+cookie1+"."+cookie2+"."+now+"."+now+"."+now+"."+"13%3B%2B__utmz%3D"+cookie1+"."+now+".1.1.utmcsr%3D(direct)%7Cutmccn%D(direct)%7utmcmd%3D(none)%3B&gaq=1");
+	    // utmccn=(organic)|utmcsr=google|utmctr=snotwuh |utmcmd=organic
+	    String utmcsr;
+		String utmccn;
+		String utmctr = null;
+		String utmcmd;
+		String utmcct = null;
+		
+		try{
+			utmcsr = URLEncoder.encode(argData.getUtmcsr(), "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			throw new RuntimeException(e);
+		}
+		try{
+			utmccn = URLEncoder.encode(argData.getUtmccn(), "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			throw new RuntimeException(e);
+		}
+		if(argData.getUtmctr() != null){
+			try{
+				utmctr = URLEncoder.encode(argData.getUtmctr(), "UTF-8");
+			} catch (UnsupportedEncodingException e) {
+				throw new RuntimeException(e);
+			}
+		}
+		try{
+			utmcmd = URLEncoder.encode(argData.getUtmcmd(), "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			throw new RuntimeException(e);
+		}
+		if(argData.getUtmcct() != null){
+			try{
+				utmcct = URLEncoder.encode(argData.getUtmcct(), "UTF-8");
+			} catch (UnsupportedEncodingException e) {
+				throw new RuntimeException(e);
+			}			
+		}
+	    
+	    sb.append("&utmcc=__utma%3D"+cookie1+"."+cookie2+"."+now+"."+now+"."+now+"."+"13%3B%2B__utmz%3D"+cookie1+"."+now+".1.1.utmcsr%3D"+utmcsr+"%7Cutmccn%3D"+utmccn+"%7utmcmd%3D"+utmcmd+(utmctr != null?"%7Cutmctr%3D"+utmctr:"")+(utmcct != null?"%7Cutmcct%3D"+utmcct:"")+"%3B&gaq=1");
 	    return sb.toString();
 	}
 	

@@ -124,7 +124,7 @@ public class JGoogleAnalyticsTracker {
 	 * @param argHostName the host name for the url
 	 */
 	public void trackPageView(String argPageURL, String argPageTitle, String argHostName){
-		trackPageView(argPageURL, argPageTitle, argHostName, "http://www.dmurph.com");
+		trackPageViewFromReferrer(argPageURL, argPageTitle, argHostName, "http://www.dmurph.com", "/");
 	}
 	
 	/**
@@ -133,9 +133,10 @@ public class JGoogleAnalyticsTracker {
 	 * 		  or anything you want as the page url.
 	 * @param argPageTitle content title
 	 * @param argHostName the host name for the url
-	 * @param argReferrerURL the url of the referrer to this page.  important for tracking trends.
+	 * @param argReferrerSite site of the referrer.  ex, www.dmurph.com
+	 * @param argReferrerPage page of the referrer.  ex, /mypage.php
 	 */
-	public void trackPageView(String argPageURL, String argPageTitle, String argHostName, String argReferrerURL){
+	public void trackPageViewFromReferrer(String argPageURL, String argPageTitle, String argHostName, String argReferrerSite, String argReferrerPage){
 		if(argPageURL == null){
 			throw new IllegalArgumentException("Page URL cannot be null, Google will not track the data.");
 		}
@@ -143,7 +144,27 @@ public class JGoogleAnalyticsTracker {
 		data.setHostName(argHostName);
 		data.setPageTitle(argPageTitle);
 		data.setPageURL(argPageURL);
-		data.setReferrer(argReferrerURL);
+		data.setReferer(argReferrerSite, argReferrerPage);
+		makeCustomRequest(data);
+	}
+	
+	/**
+	 * Tracks a page view.
+	 * @param argPageURL required, Google won't track without it.  Ex: <code>"org/me/javaclass.java"</code>,
+	 * 		  or anything you want as the page url.
+	 * @param argPageTitle content title
+	 * @param argHostName the host name for the url
+	 * 
+	 */
+	public void trackPageViewFromSearch(String argPageURL, String argPageTitle, String argHostName, String argSearchSource, String argSearchKeywords){
+		if(argPageURL == null){
+			throw new IllegalArgumentException("Page URL cannot be null, Google will not track the data.");
+		}
+		AnalyticsRequestData data = new AnalyticsRequestData();
+		data.setHostName(argHostName);
+		data.setPageTitle(argPageTitle);
+		data.setPageURL(argPageURL);
+		data.setSeachReferrer(argSearchSource, argSearchKeywords);
 		makeCustomRequest(data);
 	}
 	

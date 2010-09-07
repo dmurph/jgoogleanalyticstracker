@@ -41,12 +41,12 @@ public class TrackingTest extends TestCase {
 		JGoogleAnalyticsTracker tracker = JGoogleAnalyticsTracker.getInstance();
 		AnalyticsConfigData config = new AnalyticsConfigData("UA-17109202-5");
 		tracker.initialize(config, GoogleAnalyticsVersion.V_4_7_2);
-		tracker.trackPageView("/pagewitheverything.java", "page with everything", "www.dmurph.com", "www.dmurph.com");
-		tracker.trackPageView("pagewithonlyurl", null, null, null);
-		tracker.trackPageView("/pagewithtitle", "Page with Title", null, null);
-		tracker.trackPageView("pagewithtitleandhost", "Page With Title And Host", "pagewithtitlehost", null);
-		tracker.trackPageView("pagewithonlyreferrer", null, null, "www.pagewithonlyreferrer.com");
-
+		tracker.trackPageViewFromReferrer("/pagewitheverything.java", "page with everything", "www.dmurph.com", "www.dmurph.com", "/referalSite.html");
+		tracker.trackPageView("/pagewitheverything.java", "page with everything", "www.dmurph.com");
+		tracker.trackPageView("pagewithonlyurl", null, null);
+		tracker.trackPageView("/pagewithtitle", "Page with Title", null);
+		tracker.trackPageView("pagewithtitleandhost", "Page With Title And Host", "pagewithtitlehost");
+		tracker.trackPageViewFromReferrer("pagewithonlyreferrer", null, null, "www.pagewithonlyreferrer.com", "/referalSite2.html");
 		try {
 			Thread.sleep(1000);
 		} catch (InterruptedException e) {
@@ -65,6 +65,22 @@ public class TrackingTest extends TestCase {
 		tracker.trackEvent("Greetings", "Goodbye", "Slap");
 		tracker.trackEvent("Greetings", "Goodbye", "Slap", "3");
 		tracker.trackEvent("Greetings", "Goodbye", "Slap", "4");
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void testSearchTracking(){
+		JGoogleAnalyticsTracker.DEBUG_PRINT = true;
+		JGoogleAnalyticsTracker tracker = JGoogleAnalyticsTracker.getInstance();
+		AnalyticsConfigData config = new AnalyticsConfigData("UA-17109202-5");
+		tracker.initialize(config, GoogleAnalyticsVersion.V_4_7_2);
+		
+		tracker.trackPageViewFromSearch("/searchedToPage.java", "Search1", "www.dmurph.com", "source1", "keywords here1");
+		tracker.trackPageViewFromSearch("/searchedToPage2.java", "Search2", "www.dmurph.com", "source2", "keywords here2");
+		tracker.trackPageViewFromSearch("/searchedToPage2.java", "Search2", "www.dmurph.com", "source3", "keywords here2");
 		try {
 			Thread.sleep(1000);
 		} catch (InterruptedException e) {
