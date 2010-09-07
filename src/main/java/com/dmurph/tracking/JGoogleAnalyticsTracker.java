@@ -43,9 +43,11 @@ import java.net.URL;
  *
  */
 public class JGoogleAnalyticsTracker {
-	private static JGoogleAnalyticsTracker tracker = null;
 	public static boolean DEBUG_PRINT = false;
-	
+	private static final ThreadGroup asyncThreadGroup = new ThreadGroup("Async Google Analytics Threads");
+	static {
+		asyncThreadGroup.setMaxPriority(Thread.MIN_PRIORITY);
+	}
 	
 	public static enum GoogleAnalyticsVersion{
 		V_4_7_2
@@ -56,12 +58,12 @@ public class JGoogleAnalyticsTracker {
 	private AnalyticsConfigData configData = null;
 	private boolean enabled = false;
 	private boolean asynchronous = true;
-	private final ThreadGroup asyncThreadGroup;
 
-	private JGoogleAnalyticsTracker(){
-		gaVersion = GoogleAnalyticsVersion.V_4_7_2;
-		asyncThreadGroup = new ThreadGroup("Async Google Analytics Threads");
-		asyncThreadGroup.setMaxPriority(Thread.MIN_PRIORITY);
+	public JGoogleAnalyticsTracker(AnalyticsConfigData argConfigData, GoogleAnalyticsVersion argVersion){
+		gaVersion = argVersion;
+		configData = argConfigData;
+		createBuilder();
+		enabled = true;
 	}
 	
 	/**
@@ -85,19 +87,6 @@ public class JGoogleAnalyticsTracker {
 	 */
 	public void resetSession(){
 		builder.resetSession();
-	}
-
-	/**
-	 * Initializes and enables the tracker.
-	 * @param argConfigData the configuration for this client.  The reference is kept so any modification
-	 * 		  to this object will be reflected in requests.
-	 * @param argVersion
-	 */
-	public void initialize(AnalyticsConfigData argConfigData, GoogleAnalyticsVersion argVersion){
-		gaVersion = argVersion;
-		configData = argConfigData;
-		createBuilder();
-		enabled = true;
 	}
 	
 	/**
@@ -267,16 +256,5 @@ public class JGoogleAnalyticsTracker {
 				builder = new GoogleAnalyticsV4_7_2(configData);
 				break;
 		}
-	}
-	
-	/**
-	 * Get the instance of the tracker.
-	 * @return
-	 */
-	public synchronized static JGoogleAnalyticsTracker getInstance(){
-		if(tracker == null){
-			tracker = new JGoogleAnalyticsTracker();
-		}
-		return tracker;
 	}
 }

@@ -38,9 +38,8 @@ import junit.framework.TestCase;
 public class TrackingTest extends TestCase {
 	public void testPageView(){
 		JGoogleAnalyticsTracker.DEBUG_PRINT = true;
-		JGoogleAnalyticsTracker tracker = JGoogleAnalyticsTracker.getInstance();
 		AnalyticsConfigData config = new AnalyticsConfigData("UA-17109202-5");
-		tracker.initialize(config, GoogleAnalyticsVersion.V_4_7_2);
+		JGoogleAnalyticsTracker tracker = new JGoogleAnalyticsTracker(config, GoogleAnalyticsVersion.V_4_7_2);
 		tracker.trackPageViewFromReferrer("/pagewitheverything.java", "page with everything", "www.dmurph.com", "www.dmurph.com", "/referalSite.html");
 		tracker.trackPageView("/pagewitheverything.java", "page with everything", "www.dmurph.com");
 		tracker.trackPageView("pagewithonlyurl", null, null);
@@ -56,9 +55,8 @@ public class TrackingTest extends TestCase {
 	
 	public void testEventTracking(){
 		JGoogleAnalyticsTracker.DEBUG_PRINT = true;
-		JGoogleAnalyticsTracker tracker = JGoogleAnalyticsTracker.getInstance();
 		AnalyticsConfigData config = new AnalyticsConfigData("UA-17109202-5");
-		tracker.initialize(config, GoogleAnalyticsVersion.V_4_7_2);
+		JGoogleAnalyticsTracker tracker = new JGoogleAnalyticsTracker(config, GoogleAnalyticsVersion.V_4_7_2);
 		tracker.trackEvent("Greetings", "Hello");
 		tracker.trackEvent("Greetings", "Goodbye");
 		tracker.trackEvent("Greetings", "Hello");
@@ -82,9 +80,8 @@ public class TrackingTest extends TestCase {
 	
 	public void testSearchTracking(){
 		JGoogleAnalyticsTracker.DEBUG_PRINT = true;
-		JGoogleAnalyticsTracker tracker = JGoogleAnalyticsTracker.getInstance();
 		AnalyticsConfigData config = new AnalyticsConfigData("UA-17109202-5");
-		tracker.initialize(config, GoogleAnalyticsVersion.V_4_7_2);
+		JGoogleAnalyticsTracker tracker = new JGoogleAnalyticsTracker(config, GoogleAnalyticsVersion.V_4_7_2);
 		
 		tracker.trackPageViewFromSearch("/searchedToPage.java", "Search 1", "www.dmurph.com", "source1", "keywords here1");
 		tracker.trackPageViewFromSearch("/searchedToPage2.java", "Search 2", "www.dmurph.com", "source2", "keywords here2");
