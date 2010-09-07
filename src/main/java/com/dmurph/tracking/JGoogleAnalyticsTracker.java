@@ -46,6 +46,7 @@ public class JGoogleAnalyticsTracker {
 	private static JGoogleAnalyticsTracker tracker = null;
 	public static boolean DEBUG_PRINT = false;
 	
+	
 	public static enum GoogleAnalyticsVersion{
 		V_4_7_2
 	};
@@ -54,11 +55,30 @@ public class JGoogleAnalyticsTracker {
 	private GoogleAnalyticsURLBuilder builder = null;
 	private AnalyticsConfigData configData = null;
 	private boolean enabled = false;
+	private boolean asynchronous = true;
+	private final ThreadGroup asyncThreadGroup;
 
 	private JGoogleAnalyticsTracker(){
 		gaVersion = GoogleAnalyticsVersion.V_4_7_2;
+		asyncThreadGroup = new ThreadGroup("Async Google Analytics Threads");
 	}
 	
+	/**
+	 * Set if the requests are asynchronous (true by default).
+	 * @param asynchronous
+	 */
+	public void setAsynchronous(boolean asynchronous) {
+		this.asynchronous = asynchronous;
+	}
+
+	/**
+	 * If the requests are asynchronous (true by default).
+	 * @return
+	 */
+	public boolean isAsynchronous() {
+		return asynchronous;
+	}
+
 	/**
 	 * Initializes and enables the tracker.
 	 * @param argConfigData the configuration for this client.  The reference is kept so any modification
@@ -164,6 +184,10 @@ public class JGoogleAnalyticsTracker {
 		makeCustomRequest(data);
 	}
 	
+	/**
+	 * Makes a custom tracking request based from the given data.
+	 * @param argData
+	 */
 	public void makeCustomRequest(AnalyticsRequestData argData){
 		if(argData == null){
 			throw new NullPointerException("Data cannot be null");
@@ -172,13 +196,25 @@ public class JGoogleAnalyticsTracker {
 		makeRequest(url);
 	}
 	
-	private synchronized void makeRequest(String argURL){
+	private synchronized void makeRequest(final String argURL){
 		if(!enabled){
 			if(DEBUG_PRINT){
 				System.out.println("Ignoring tracking request, enabled is true");
 			}
 			return;
 		}
+		if(asynchronous){
+			(new Thread(asyncThreadGroup, "AnalyticThread-"+asyncThreadGroup.activeCount()){
+				public void run() {
+					dispatchRequest(argURL);
+				}
+			}).start();
+		}else{
+			dispatchRequest(argURL);
+		}
+	}
+	
+	private void dispatchRequest(String argURL){
 		try {
 			URL url = new URL(argURL);
 			HttpURLConnection connection = (HttpURLConnection) url.openConnection();

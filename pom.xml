@@ -7,6 +7,7 @@
 	<name>JGoogleAnalyticsTracker</name>
 	<description>A java library for sending google analytics tracking information.</description>
 	<url>http://github.com/dmurph/JGoogleAnalyticsTracker</url>
+	<packaging>jar</packaging>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>

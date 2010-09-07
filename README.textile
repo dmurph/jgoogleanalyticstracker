@@ -2,7 +2,7 @@ h1. JGoogleAnalyticsTracker
 
 h2. Introduction
 
-p. JGoogleAnalyticsTracker is a java api for sending out Google tracking data.  I developed it so I could use Google's fantastic analytics software on java gui applications, as Google never made a java implementation for sending tracking data.
+p. JGoogleAnalyticsTracker is a very lightweight java api (it only contains 5 classes) for sending out Google tracking data.  I developed it so I could use Google's fantastic analytics software on java gui applications, as Google never made a java implementation for sending tracking data.
 
 h2. License
 
@@ -10,16 +10,23 @@ p. See the LICENSE file
 
 h2. Usage
 
-p. The api is fairly straightforward, to start you make your config data:
+p. The api is fairly straightforward. First, you make your config data.  @AnayticsConfigData@ automatically populates most of the user information from the system, the only thing it can't figure out is the flash version.
 
 bc.. AnalyticsConfigData config = new AnalyticsConfigData("MyTrackingCode");
-config.setScreenResolution("1280x800"); // set config parameters
+// if you want to set your own config parameters:
+config.setFlashVesion("9.0 r24");
 // etc
 
-p. You set up the @JGoogleAnalyticsTracker@ with the config and a version (right now only 4.7.2, but it's there for when Google updates their tags and such):
+p. You set up the @JGoogleAnalyticsTracker@ with the config and a version (right now only 4.7.2, but it's there for future analytics versions):
 
 bc.. JGoogleAnalyticsTracker tracker = JGoogleAnalyticsTracker.getInstance();
 tracker.initialize(config, GoogleAnalyticsVersion.V_4_7_2);
 
-p. and then you can send tracking data with the @trackPageView@ and @trackEvent@ methods, or make your own request with @makeCustomRequest(AnalyticsRequestData)@
+p. and then you can send tracking data with the @trackPageView@ and @trackEvent@ methods, or make your own request the @makeCustomRequest(AnalyticsRequestData)@ method.  
 
+p=. For complete documentation, see the "javadocs":http://www.dmurph.com/jgoogleanalyticstracker/index.html .
+
+h2. Other features
+
+ * The tracker can be enabled/disabled by calling @setEnabled(boolean)@
+ * The tracker dispatches all tracking requests asynchronously by default, to change call @setAsynchronous(boolean)@

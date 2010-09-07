@@ -41,13 +41,17 @@ public class TrackingTest extends TestCase {
 		JGoogleAnalyticsTracker tracker = JGoogleAnalyticsTracker.getInstance();
 		AnalyticsConfigData config = new AnalyticsConfigData("UA-17109202-5");
 		tracker.initialize(config, GoogleAnalyticsVersion.V_4_7_2);
-		tracker.trackPageView("www.dmurph.com", "page with everything", "/test1.java");
-		tracker.trackPageView("www.dmurph.com", "page with hostname and no address", null, null);
-		tracker.trackPageView("notAHostname", "page with a hostname and no address", null, null);
-		tracker.trackPageView(null, "page with no hostname and a address", "test2.java", null);
-		tracker.trackPageView("www.pagewithnotitle.com", null, "notitle.java", null);
-		tracker.trackPageView(null, null, "onlyurl.java", null);
-		tracker.trackPageView("www.onlyhostname.com", null, null, null);
+		tracker.trackPageView("/pagewitheverything.java", "page with everything", "www.dmurph.com", "www.dmurph.com");
+		tracker.trackPageView("pagewithonlyurl", null, null, null);
+		tracker.trackPageView("/pagewithtitle", "Page with Title", null, null);
+		tracker.trackPageView("pagewithtitleandhost", "Page With Title And Host", "pagewithtitlehost", null);
+		tracker.trackPageView("pagewithonlyreferrer", null, null, "www.pagewithonlyreferrer.com");
+
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void testEventTracking(){
@@ -61,5 +65,10 @@ public class TrackingTest extends TestCase {
 		tracker.trackEvent("Greetings", "Goodbye", "Slap");
 		tracker.trackEvent("Greetings", "Goodbye", "Slap", "3");
 		tracker.trackEvent("Greetings", "Goodbye", "Slap", "4");
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 }
