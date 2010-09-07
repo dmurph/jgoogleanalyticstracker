@@ -67,18 +67,18 @@ public class GoogleAnalyticsV4_7_2 implements IGoogleAnalyticsURLBuilder{
 	    sb.append("&utmn=" + random.nextInt()); // random int so no caching
 	   
 	    if(argData.getHostName() != null){
-	    	sb.append("&utmhn=" + getURLString(argData.getHostName())); // hostname
+	    	sb.append("&utmhn=" + getURIString(argData.getHostName())); // hostname
 	    }
 	    
 	    if(argData.getEventAction() != null && argData.getEventCategory() != null){
 	    	sb.append("&utmt=event");
-	    	String category = getURLStringWithSpaceEncoded(argData.getEventCategory());
-	    	String action = getURLStringWithSpaceEncoded(argData.getEventAction());
+	    	String category = getURIString(argData.getEventCategory());
+	    	String action = getURIString(argData.getEventAction());
 	    	
 	    	sb.append("&utme=5("+category+"*"+action);
 	    	
 	    	if(argData.getEventLabel() != null){
-	    		sb.append("*"+getURLStringWithSpaceEncoded(argData.getEventLabel()));
+	    		sb.append("*"+getURIString(argData.getEventLabel()));
 	    	}
 	    	sb.append(")");
 	    	
@@ -90,44 +90,44 @@ public class GoogleAnalyticsV4_7_2 implements IGoogleAnalyticsURLBuilder{
 	    }
 	    
 	    if(config.getEncoding() != null){
-	    	sb.append("&utmcs="+ getURLStringWithSpaceEncoded(config.getEncoding())); // encoding
+	    	sb.append("&utmcs="+ getURIString(config.getEncoding())); // encoding
 	    }else{
 	    	sb.append("&utmcs=-");
 	    }
 	    if(config.getScreenResolution() != null){
-	    	sb.append("&utmsr=" + getURLStringWithSpaceEncoded(config.getScreenResolution())); // screen resolution
+	    	sb.append("&utmsr=" + getURIString(config.getScreenResolution())); // screen resolution
 	    }
 	    if(config.getColorDepth() != null){
-	    	sb.append("&utmsc=" + getURLStringWithSpaceEncoded(config.getColorDepth())); // color depth
+	    	sb.append("&utmsc=" + getURIString(config.getColorDepth())); // color depth
 	    }
 	    if(config.getUserLanguage() != null){
-	    	sb.append("&utmul="+ getURLStringWithSpaceEncoded(config.getUserLanguage())); // language
+	    	sb.append("&utmul="+ getURIString(config.getUserLanguage())); // language
 	    }
 	    sb.append("&utmje=1"); // java enabled (probably)
 	    
 	    if(config.getFlashVersion() != null){
-	    	sb.append("&utmfl="+getURLStringWithSpaceEncoded(config.getFlashVersion())); // flash version
+	    	sb.append("&utmfl="+getURIString(config.getFlashVersion())); // flash version
 	    }
 	    
 	    if(argData.getPageTitle() != null){
-	    	sb.append("&utmdt=" + getURLStringWithSpaceEncoded(argData.getPageTitle())); // page title
+	    	sb.append("&utmdt=" + getURIString(argData.getPageTitle())); // page title
 	    }
 	    
 	    sb.append("&utmhid="+random.nextInt());
 	    
 	    if(argData.getPageURL() != null){
-	    	sb.append("&utmp=" + getURLStringWithSpaceEncoded(argData.getPageURL())); // page url
+	    	sb.append("&utmp=" + getURIString(argData.getPageURL())); // page url
 	    }
 	    
 	    sb.append("&utmac=" + config.getTrackingCode()); // tracking code
 	    
 	    // cookie data
 	    // utmccn=(organic)|utmcsr=google|utmctr=snotwuh |utmcmd=organic
-	    String utmcsr = getURLStringWithSpaceEncoded(argData.getUtmcsr());
-		String utmccn = getURLStringWithSpaceEncoded(argData.getUtmccn());
-		String utmctr = getURLString(argData.getUtmctr());
-		String utmcmd = getURLStringWithSpaceEncoded(argData.getUtmcmd());
-		String utmcct = getURLStringWithSpaceEncoded(argData.getUtmcct());
+	    String utmcsr = getURIString(argData.getUtmcsr());
+		String utmccn = getURIString(argData.getUtmccn());
+		String utmctr = getURIString(argData.getUtmctr());
+		String utmcmd = getURIString(argData.getUtmcmd());
+		String utmcct = getURIString(argData.getUtmcct());
 		
 	    sb.append("&utmcc=__utma%3D"+cookie1+"."+cookie2+"."+now+"."+now+"."+now+"."+"13%3B%2B__utmz%3D"+cookie1+"."+now+".1.1.utmcsr%3D"+utmcsr+"%7Cutmccn%3D"+utmccn+"%7utmcmd%3D"+utmcmd+(utmctr != null?"%7Cutmctr%3D"+utmctr:"")+(utmcct != null?"%7Cutmcct%3D"+utmcct:"")+"%3B&gaq=1");
 	    return sb.toString();
@@ -173,37 +173,23 @@ public class GoogleAnalyticsV4_7_2 implements IGoogleAnalyticsURLBuilder{
 	 * &utmcc=__utma%3D143101472.2118079581.1279863622.1279863622.1279863622.1%3B%2B__utmz%3D143101472.1279863622.1.1.utmcsr%3D(direct)%7Cutmccn%3D(direct)%7Cutmcmd%3D(none)%3B&gaq=1
 	 */
 	
-	private String getURLStringWithSpaceEncoded(String argString){
+	private String getURIString(String argString){
 		if(argString == null){
 			return null;
 		}
-		// crappy hack, should use Apache-commons-httpclient but I'd rather not have
-		// dependencies.
-		if(argString.contains(" ")){
-			String[] strings = argString.split(" ");
-			StringBuilder sb = new StringBuilder(argString.length()+5);
-			for(int i=0; i<strings.length; i++){
-				if(i!=0){
-					sb.append("%20");
-				}
-				sb.append(getURLString(strings[i]));
-			}
-			return sb.toString();
-		}
-		
-		return getURLString(argString);
+		return URIEncoder.encodeURI(argString);
 	}
 	
-	private String getURLString(String argString){
-		if(argString == null){
-			return null;
-		}
-		try{
-			return URLEncoder.encode(argString, "UTF-8");
-		} catch (UnsupportedEncodingException e) {
-			throw new RuntimeException(e);
-		}	
-	}
+//	private String getURLString(String argString){
+//		if(argString == null){
+//			return null;
+//		}
+//		try{
+//			return URLEncoder.encode(argString, "UTF-8");
+//		} catch (UnsupportedEncodingException e) {
+//			throw new RuntimeException(e);
+//		}	
+//	}
 
 	/**
 	 * @see com.dmurph.tracking.IGoogleAnalyticsURLBuilder#resetSession()
