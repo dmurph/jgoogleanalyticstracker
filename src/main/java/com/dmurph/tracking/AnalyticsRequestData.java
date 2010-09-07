@@ -38,7 +38,7 @@ public class AnalyticsRequestData {
 	private String eventCategory = null;
 	private String eventAction = null;
 	private String eventLabel = null;
-	private String eventValue = null;
+	private Integer eventValue = null;
 //	utmcsr
 //	Identifies a search engine, newsletter name, or other source specified in the
 //	utm_source query parameter See the “Marketing Campaign Tracking”
@@ -141,7 +141,7 @@ public class AnalyticsRequestData {
 	/**
 	 * @return the eventValue
 	 */
-	public String getEventValue() {
+	public Integer getEventValue() {
 		return eventValue;
 	}
 	/**
@@ -191,7 +191,7 @@ public class AnalyticsRequestData {
 	 * events.
 	 * @param argEventValue the eventValue to set
 	 */
-	public void setEventValue(String argEventValue) {
+	public void setEventValue(Integer argEventValue) {
 		eventValue = argEventValue;
 	}
 	/**

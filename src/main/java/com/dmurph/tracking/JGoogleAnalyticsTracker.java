@@ -193,12 +193,12 @@ public class JGoogleAnalyticsTracker {
 	/**
 	 * Tracks an event.  To provide more info about the page, use
 	 * {@link #makeCustomRequest(AnalyticsRequestData)}.
-	 * @param argCategory
-	 * @param argAction
-	 * @param argLabel
-	 * @param argValue
+	 * @param argCategory required
+	 * @param argAction required
+	 * @param argLabel optional
+	 * @param argValue optional
 	 */
-	public void trackEvent(String argCategory, String argAction, String argLabel, String argValue){
+	public void trackEvent(String argCategory, String argAction, String argLabel, Integer argValue){
 		AnalyticsRequestData data = new AnalyticsRequestData();
 		data.setEventCategory(argCategory);
 		data.setEventAction(argAction);

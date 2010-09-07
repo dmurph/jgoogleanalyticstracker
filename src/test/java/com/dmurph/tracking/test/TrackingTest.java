@@ -63,8 +63,16 @@ public class TrackingTest extends TestCase {
 		tracker.trackEvent("Greetings", "Goodbye");
 		tracker.trackEvent("Greetings", "Hello");
 		tracker.trackEvent("Greetings", "Goodbye", "Slap");
-		tracker.trackEvent("Greetings", "Goodbye", "Slap", "3");
-		tracker.trackEvent("Greetings", "Goodbye", "Slap", "4");
+		tracker.trackEvent("Greetings", "Goodbye", "Slap", 3);
+		tracker.trackEvent("Greetings", "Goodbye", "Slap", 4);
+		tracker.trackEvent("Main Page", "Login");
+		tracker.trackEvent("Main Page", "Login");
+		tracker.trackEvent("Main Page", "Login");
+		tracker.trackEvent("Main Page", "Logout");
+		tracker.trackEvent("Main Page", "Timed Out");
+		tracker.trackEvent("Main Page", "Timed Out");
+		tracker.trackEvent("Main Page", "Timed Out");
+		
 		try {
 			Thread.sleep(1000);
 		} catch (InterruptedException e) {
@@ -78,10 +86,11 @@ public class TrackingTest extends TestCase {
 		AnalyticsConfigData config = new AnalyticsConfigData("UA-17109202-5");
 		tracker.initialize(config, GoogleAnalyticsVersion.V_4_7_2);
 		
-		tracker.trackPageViewFromSearch("/searchedToPage.java", "Search1", "www.dmurph.com", "source1", "keywords here1");
-		tracker.trackPageViewFromSearch("/searchedToPage2.java", "Search2", "www.dmurph.com", "source2", "keywords here2");
-		tracker.trackPageViewFromSearch("/searchedToPage2.java", "Search2", "www.dmurph.com", "source3", "keywords here2");
-		tracker.trackPageViewFromSearch("/searchedToPage2.java", "Search3", "www.dmurph.com", "source3", "keywords here2");
+		tracker.trackPageViewFromSearch("/searchedToPage.java", "Search 1", "www.dmurph.com", "source1", "keywords here1");
+		tracker.trackPageViewFromSearch("/searchedToPage2.java", "Search 2", "www.dmurph.com", "source2", "keywords here2");
+		tracker.trackPageViewFromSearch("/searchedToPage2.java", "Search 2", "www.dmurph.com", "source2", "keywords here3");
+		tracker.trackPageViewFromSearch("/searchedToPage2.java", "Search 2", "www.dmurph.com", "source3", "keywords here2");
+		tracker.trackPageViewFromSearch("/searchedToPage2.java", "Search 3", "www.dmurph.com", "source3", "keywords here2");
 
 		try {
 			Thread.sleep(1000);

@@ -78,9 +78,27 @@ public class GoogleAnalyticsV4_7_2 implements GoogleAnalyticsURLBuilder{
 	    
 	    if(argData.getEventAction() != null && argData.getEventCategory() != null){
 	    	sb.append("&utmt=event");
-	    	sb.append("&utme=5("+argData.getEventCategory()+"*"+argData.getEventAction());
+	    	String category, action;
+	    	try { // we have to encode it for a url
+				category = URLEncoder.encode(argData.getEventCategory(), "UTF-8");
+			} catch (UnsupportedEncodingException e) {
+				throw new RuntimeException(e);
+			}
+			try { // we have to encode it for a url
+				action = URLEncoder.encode(argData.getEventCategory(), "UTF-8");
+			} catch (UnsupportedEncodingException e) {
+				throw new RuntimeException(e);
+			}
+	    	
+	    	sb.append("&utme=5("+category+"*"+action);
 	    	if(argData.getEventLabel() != null){
-	    		sb.append("*"+argData.getEventLabel());
+	    		String label;
+	    		try { // we have to encode it for a url
+					label = URLEncoder.encode(argData.getEventLabel(), "UTF-8");
+				} catch (UnsupportedEncodingException e) {
+					throw new RuntimeException(e);
+				}
+	    		sb.append("*"+label);
 	    	}
 	    	sb.append(")");
 	    	if(argData.getEventValue() != null){
