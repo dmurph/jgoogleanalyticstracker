@@ -78,29 +78,16 @@ public class GoogleAnalyticsV4_7_2 implements GoogleAnalyticsURLBuilder{
 	    
 	    if(argData.getEventAction() != null && argData.getEventCategory() != null){
 	    	sb.append("&utmt=event");
-	    	String category, action;
-	    	try { // we have to encode it for a url
-				category = URLEncoder.encode(argData.getEventCategory(), "UTF-8");
-			} catch (UnsupportedEncodingException e) {
-				throw new RuntimeException(e);
-			}
-			try { // we have to encode it for a url
-				action = URLEncoder.encode(argData.getEventCategory(), "UTF-8");
-			} catch (UnsupportedEncodingException e) {
-				throw new RuntimeException(e);
-			}
+	    	String category = getURLStringWithSpaceEncoded(argData.getEventCategory());
+	    	String action = getURLStringWithSpaceEncoded(argData.getEventAction());
 	    	
 	    	sb.append("&utme=5("+category+"*"+action);
+	    	
 	    	if(argData.getEventLabel() != null){
-	    		String label;
-	    		try { // we have to encode it for a url
-					label = URLEncoder.encode(argData.getEventLabel(), "UTF-8");
-				} catch (UnsupportedEncodingException e) {
-					throw new RuntimeException(e);
-				}
-	    		sb.append("*"+label);
+	    		sb.append("*"+getURLStringWithSpaceEncoded(argData.getEventLabel()));
 	    	}
 	    	sb.append(")");
+	    	
 	    	if(argData.getEventValue() != null){
 	    		sb.append("("+argData.getEventValue()+")");
 	    	}
@@ -109,97 +96,45 @@ public class GoogleAnalyticsV4_7_2 implements GoogleAnalyticsURLBuilder{
 	    }
 	    
 	    if(config.getEncoding() != null){
-	    	sb.append("&utmcs="+ config.getEncoding()); // encoding
+	    	sb.append("&utmcs="+ getURLStringWithSpaceEncoded(config.getEncoding())); // encoding
 	    }else{
 	    	sb.append("&utmcs=-");
 	    }
 	    if(config.getScreenResolution() != null){
-	    	sb.append("&utmsr=" + config.getScreenResolution()); // screen resolution
+	    	sb.append("&utmsr=" + getURLStringWithSpaceEncoded(config.getScreenResolution())); // screen resolution
 	    }
 	    if(config.getColorDepth() != null){
-	    	sb.append("&utmsc=" + config.getColorDepth()); // color depth
+	    	sb.append("&utmsc=" + getURLStringWithSpaceEncoded(config.getColorDepth())); // color depth
 	    }
 	    if(config.getUserLanguage() != null){
-	    	sb.append("&utmul="+ config.getUserLanguage()); // language
+	    	sb.append("&utmul="+ getURLStringWithSpaceEncoded(config.getUserLanguage())); // language
 	    }
 	    sb.append("&utmje=1"); // java enabled (probably)
 	    
 	    if(config.getFlashVersion() != null){
-	    	String encoded;
-	    	
-	    	try { // we have to encode it for a url
-				encoded = URLEncoder.encode(config.getFlashVersion(), "UTF-8");
-			} catch (UnsupportedEncodingException e) {
-				throw new RuntimeException(e);
-			}
-	    	sb.append("&utmfl="+encoded); // flash version
+	    	sb.append("&utmfl="+getURLStringWithSpaceEncoded(config.getFlashVersion())); // flash version
 	    }
 	    
 	    if(argData.getPageTitle() != null){
-	    	String encoded;
-	    	
-	    	try { // we have to encode it for a url
-				encoded = URLEncoder.encode(argData.getPageTitle(), "UTF-8");
-			} catch (UnsupportedEncodingException e) {
-				throw new RuntimeException(e);
-			}
-	    	sb.append("&utmdt=" + encoded); // page title
+	    	sb.append("&utmdt=" + getURLStringWithSpaceEncoded(argData.getPageTitle())); // page title
 	    }
 	    
 	    sb.append("&utmhid="+random.nextInt());
 	    
 	    if(argData.getPageURL() != null){
-	    	String encoded = null;
-	    	
-	    	try { // we have to encode it for a url
-				encoded = URLEncoder.encode(argData.getPageURL(), "UTF-8");
-			} catch (UnsupportedEncodingException e) {
-				throw new RuntimeException(e);
-			}
-	    	
-	    	sb.append("&utmp=" + encoded); // page url
+	    	sb.append("&utmp=" + getURLStringWithSpaceEncoded(argData.getPageURL())); // page url
 	    }
 	    
 	    sb.append("&utmac=" + config.getTrackingCode()); // tracking code
 	    
 	    // cookie data
 	    // utmccn=(organic)|utmcsr=google|utmctr=snotwuh |utmcmd=organic
-	    String utmcsr;
-		String utmccn;
-		String utmctr = null;
-		String utmcmd;
-		String utmcct = null;
+	    String utmcsr = getURLStringWithSpaceEncoded(argData.getUtmcsr());
+		String utmccn = getURLStringWithSpaceEncoded(argData.getUtmccn());
+		String utmctr = getURLString(argData.getUtmctr());
+		String utmcmd = getURLStringWithSpaceEncoded(argData.getUtmcmd());
+		String utmcct = getURLStringWithSpaceEncoded(argData.getUtmcct());
 		
-		try{
-			utmcsr = URLEncoder.encode(argData.getUtmcsr(), "UTF-8");
-		} catch (UnsupportedEncodingException e) {
-			throw new RuntimeException(e);
-		}
-		try{
-			utmccn = URLEncoder.encode(argData.getUtmccn(), "UTF-8");
-		} catch (UnsupportedEncodingException e) {
-			throw new RuntimeException(e);
-		}
-		if(argData.getUtmctr() != null){
-			try{
-				utmctr = URLEncoder.encode(argData.getUtmctr(), "UTF-8");
-			} catch (UnsupportedEncodingException e) {
-				throw new RuntimeException(e);
-			}
-		}
-		try{
-			utmcmd = URLEncoder.encode(argData.getUtmcmd(), "UTF-8");
-		} catch (UnsupportedEncodingException e) {
-			throw new RuntimeException(e);
-		}
-		if(argData.getUtmcct() != null){
-			try{
-				utmcct = URLEncoder.encode(argData.getUtmcct(), "UTF-8");
-			} catch (UnsupportedEncodingException e) {
-				throw new RuntimeException(e);
-			}			
-		}
-	    
 	    sb.append("&utmcc=__utma%3D"+cookie1+"."+cookie2+"."+now+"."+now+"."+now+"."+"13%3B%2B__utmz%3D"+cookie1+"."+now+".1.1.utmcsr%3D"+utmcsr+"%7Cutmccn%3D"+utmccn+"%7utmcmd%3D"+utmcmd+(utmctr != null?"%7Cutmctr%3D"+utmctr:"")+(utmcct != null?"%7Cutmcct%3D"+utmcct:"")+"%3B&gaq=1");
 	    return sb.toString();
 	}
@@ -243,6 +178,25 @@ public class GoogleAnalyticsV4_7_2 implements GoogleAnalyticsURLBuilder{
 	 * &utmac=UA-17109202-5
 	 * &utmcc=__utma%3D143101472.2118079581.1279863622.1279863622.1279863622.1%3B%2B__utmz%3D143101472.1279863622.1.1.utmcsr%3D(direct)%7Cutmccn%3D(direct)%7Cutmcmd%3D(none)%3B&gaq=1
 	 */
+	
+	private String getURLStringWithSpaceEncoded(String argString){
+		if(argString == null){
+			return null;
+		}
+		argString = argString.replaceAll(" ", "%20");
+		return getURLString(argString);
+	}
+	
+	private String getURLString(String argString){
+		if(argString == null){
+			return null;
+		}
+		try{
+			return URLEncoder.encode(argString, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			throw new RuntimeException(e);
+		}	
+	}
 
 	/**
 	 * @see com.dmurph.tracking.GoogleAnalyticsURLBuilder#resetSession()
