@@ -81,6 +81,8 @@ public class TrackingTest extends TestCase {
 		tracker.trackPageViewFromSearch("/searchedToPage.java", "Search1", "www.dmurph.com", "source1", "keywords here1");
 		tracker.trackPageViewFromSearch("/searchedToPage2.java", "Search2", "www.dmurph.com", "source2", "keywords here2");
 		tracker.trackPageViewFromSearch("/searchedToPage2.java", "Search2", "www.dmurph.com", "source3", "keywords here2");
+		tracker.trackPageViewFromSearch("/searchedToPage2.java", "Search3", "www.dmurph.com", "source3", "keywords here2");
+
 		try {
 			Thread.sleep(1000);
 		} catch (InterruptedException e) {
