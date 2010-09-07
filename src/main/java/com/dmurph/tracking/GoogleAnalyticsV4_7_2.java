@@ -26,6 +26,7 @@
 package com.dmurph.tracking;
 
 import java.io.UnsupportedEncodingException;
+import java.net.URI;
 import java.net.URLEncoder;
 import java.util.Random;
 
@@ -183,7 +184,20 @@ public class GoogleAnalyticsV4_7_2 implements GoogleAnalyticsURLBuilder{
 		if(argString == null){
 			return null;
 		}
-		argString = argString.replaceAll(" ", "%20");
+		// crappy hack, should use Apache-commons-httpclient but I'd rather not have
+		// dependencies.
+		if(argString.contains(" ")){
+			String[] strings = argString.split(" ");
+			StringBuilder sb = new StringBuilder(argString.length()+5);
+			for(int i=0; i<strings.length; i++){
+				if(i!=0){
+					sb.append("%20");
+				}
+				sb.append(getURLString(strings[i]));
+			}
+			return sb.toString();
+		}
+		
 		return getURLString(argString);
 	}
 	
