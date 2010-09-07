@@ -30,9 +30,9 @@ import java.net.URL;
 
 /**
  * Get the tracker by calling {@link #getInstance()}, then initialize by calling
- * {@link #initialize(AnalyticsConfigData, GoogleAnalyticsVersion)}.  Common tracking calls are implemented
+ * {@link #initialize(AnalyticsConfigData, GoogleAnalyticsVersion)}. Common tracking calls are implemented
  * as methods, but if you want to control what data to send, then use {@link #makeCustomRequest(AnalyticsRequestData)}.
- * If you are making custom calls, the onlyrequirements are:
+ * If you are making custom calls, the only requirements are:
  * <ul><li>If you are tracking an event, {@link AnalyticsRequestData#setEventCategory(String)} and
  * 			{@link AnalyticsRequestData#setEventAction(String)} must both be populated.</li>
  * 	   <li>If you are not tracking an event, {@link AnalyticsRequestData#setPageURL(String)} must
@@ -77,6 +77,13 @@ public class JGoogleAnalyticsTracker {
 	 */
 	public boolean isAsynchronous() {
 		return asynchronous;
+	}
+	
+	/**
+	 * Resets the session cookie.
+	 */
+	public void resetSession(){
+		builder.resetSession();
 	}
 
 	/**
