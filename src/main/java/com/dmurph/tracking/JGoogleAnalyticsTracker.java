@@ -61,6 +61,7 @@ public class JGoogleAnalyticsTracker {
 	private JGoogleAnalyticsTracker(){
 		gaVersion = GoogleAnalyticsVersion.V_4_7_2;
 		asyncThreadGroup = new ThreadGroup("Async Google Analytics Threads");
+		asyncThreadGroup.setMaxPriority(Thread.MIN_PRIORITY);
 	}
 	
 	/**
@@ -135,9 +136,6 @@ public class JGoogleAnalyticsTracker {
 	 * @param argReferrerURL the url of the referrer to this page.  important for tracking trends.
 	 */
 	public void trackPageView(String argPageURL, String argPageTitle, String argHostName, String argReferrerURL){
-		if(builder == null){
-			throw new RuntimeException("Class was not initialized");
-		}
 		if(argPageURL == null){
 			throw new IllegalArgumentException("Page URL cannot be null, Google will not track the data.");
 		}
@@ -179,9 +177,6 @@ public class JGoogleAnalyticsTracker {
 	 * @param argValue
 	 */
 	public void trackEvent(String argCategory, String argAction, String argLabel, String argValue){
-		if(builder == null){
-			throw new RuntimeException("Class was not initialized");
-		}
 		AnalyticsRequestData data = new AnalyticsRequestData();
 		data.setEventCategory(argCategory);
 		data.setEventAction(argAction);
@@ -194,30 +189,32 @@ public class JGoogleAnalyticsTracker {
 	/**
 	 * Makes a custom tracking request based from the given data.
 	 * @param argData
+	 * @throws NullPointerException if argData is null or if the URL builder is null
 	 */
-	public void makeCustomRequest(AnalyticsRequestData argData){
-		if(argData == null){
-			throw new NullPointerException("Data cannot be null");
-		}
-		String url = builder.buildURL(argData);
-		makeRequest(url);
-	}
-	
-	private synchronized void makeRequest(final String argURL){
+	public synchronized void makeCustomRequest(AnalyticsRequestData argData){
 		if(!enabled){
 			if(DEBUG_PRINT){
 				System.out.println("Ignoring tracking request, enabled is true");
 			}
 			return;
 		}
+		if(argData == null){
+			throw new NullPointerException("Data cannot be null");
+		}
+		if(builder == null){
+			throw new NullPointerException("Class was not initialized");
+		}
+		final String url = builder.buildURL(argData);
+		
 		if(asynchronous){
-			(new Thread(asyncThreadGroup, "AnalyticThread-"+asyncThreadGroup.activeCount()){
+			Thread t = new Thread(asyncThreadGroup, "AnalyticThread-"+asyncThreadGroup.activeCount()){
 				public void run() {
-					dispatchRequest(argURL);
+					dispatchRequest(url);
 				}
-			}).start();
+			};
+			t.start();
 		}else{
-			dispatchRequest(argURL);
+			dispatchRequest(url);
 		}
 	}
 	
@@ -225,15 +222,15 @@ public class JGoogleAnalyticsTracker {
 		try {
 			URL url = new URL(argURL);
 			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-			connection.setInstanceFollowRedirects(true);
 			connection.setRequestMethod("GET");
+			connection.setInstanceFollowRedirects(true);
 			connection.connect();
 			int responseCode = connection.getResponseCode();
 			if (responseCode != HttpURLConnection.HTTP_OK) {
-				System.err.println("JGoogleAnalytics: Error requesting url '" + argURL+"', received response code "+responseCode);
+				System.err.println("JGoogleAnalyticsTracker: Error requesting url '" + argURL+"', received response code "+responseCode);
 			} else {
 				if(DEBUG_PRINT){
-					System.out.println("JGoogleAnalytics: Tracking success for url '"+argURL+"'");
+					System.out.println("JGoogleAnalyticsTracker: Tracking success for url '"+argURL+"'");
 				}
 			}
 		} catch (Exception e) {
