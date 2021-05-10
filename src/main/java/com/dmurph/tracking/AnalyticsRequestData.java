@@ -62,7 +62,7 @@ public class AnalyticsRequestData {
 	// search:
 	// utmcsr=google|utmccn=(organic)|utmcmd=organic|utmctr=rol%20wheels
 	
-	// utmcsr%3D(direct)%7Cutmccn%D(direct)%7utmcmd%3D(none)
+	// utmcsr%3D(direct)%7Cutmccn%D(direct)%7Cutmcmd%3D(none)
 	private String utmcsr = "(direct)";
 	private String utmccn = "(direct)";
 	private String utmctr = null;
