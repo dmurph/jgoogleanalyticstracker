@@ -132,7 +132,7 @@ public class GoogleAnalyticsV4_7_2 implements IGoogleAnalyticsURLBuilder{
 		long timestampCurrent=config.getVisitorData().newRequest();
 		int visits=config.getVisitorData().getVisits();
 	    
-		sb.append("&utmcc=__utma%3D"+hostnameHash+"."+visitorId+"."+timestampFirst+"."+timestampPrevious+"."+timestampCurrent+"."+ visits + "%3B%2B__utmz%3D"+hostnameHash+"."+now+".1.1.utmcsr%3D"+utmcsr+"%7Cutmccn%3D"+utmccn+"%7utmcmd%3D"+utmcmd+(utmctr != null?"%7Cutmctr%3D"+utmctr:"")+(utmcct != null?"%7Cutmcct%3D"+utmcct:"")+"%3B&gaq=1");
+		sb.append("&utmcc=__utma%3D"+hostnameHash+"."+visitorId+"."+timestampFirst+"."+timestampPrevious+"."+timestampCurrent+"."+ visits + "%3B%2B__utmz%3D"+hostnameHash+"."+now+".1.1.utmcsr%3D"+utmcsr+"%7Cutmccn%3D"+utmccn+"%7Cutmcmd%3D"+utmcmd+(utmctr != null?"%7Cutmctr%3D"+utmctr:"")+(utmcct != null?"%7Cutmcct%3D"+utmcct:"")+"%3B&gaq=1");
 	    return sb.toString();
 	}
 	
